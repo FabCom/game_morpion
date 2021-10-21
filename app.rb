@@ -31,13 +31,17 @@ class Application
     end
   end
 
+  def self.end_game
+    @@play_again = 0
+  end
+
   def play_game
-    @play_again = true
-    while @play_again == true
+    @@play_again = 1
+    while @@play_again == 1
       Game.new(@players)
     end
-    if @play_again == false
-      puts "Fin de la partie"
+    if @@play_again == 0
+      puts "Fin du jeu"
     end
   end
 end

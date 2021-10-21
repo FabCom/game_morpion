@@ -18,8 +18,8 @@ class Player
     @results[1] += 1
   end
 
-  def state
-    @name + " : #{@results[0]} parties gagnées et #{@results[0]} parties perdues"
+  def scores
+    @name + " : #{@results[0]} parties gagnées et #{@results[1]} parties perdues"
   end
 
   def define_symbol(symbol)

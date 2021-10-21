@@ -1,11 +1,12 @@
 class Board
 
   attr_accessor :board_lines , :board_cases
+  @@cases = ["A1","B1","C1","A2","B2","C2","A3","B3","C3"]
 
   def initialize
     @board_cases = {}
     @board_lines = Array.new(29)
-    ["A1","B1","C1","A2","B2","C2","A3","B3","C3"].each {|current| @board_cases[current] = BoardCase.new}
+    @@cases.each {|current| @board_cases[current] = BoardCase.new}
     draw()
   end
 
@@ -57,5 +58,9 @@ class Board
       end
       line_counter_7 += 1
     end
+  end
+
+  def self.cases
+    @@cases
   end
 end

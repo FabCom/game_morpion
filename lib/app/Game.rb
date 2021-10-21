@@ -21,45 +21,91 @@ class Game
   end
 
   def is_win
-    if @board.board_cases["A1"].state == @board.board_cases["A2"].state && @board.board_cases["A1"].state == @board.board_cases["A3"].state && @board.board_cases["A1"].state != BoardCase.state_empty then
-      @game_statut = 0
-    elsif @board.board_cases["B1"].state == @board.board_cases["B2"].state && @board.board_cases["B1"].state == @board.board_cases["B3"].state && @board.board_cases["B1"].state != BoardCase.state_empty then
-      @game_statut = 0
-    elsif @board.board_cases["C1"].state == @board.board_cases["C2"].state && @board.board_cases["C1"].state == @board.board_cases["C3"].state && @board.board_cases["C1"].state != BoardCase.state_empty then
-      @game_statut = 0
-    elsif @board.board_cases["A1"].state == @board.board_cases["B2"].state && @board.board_cases["A1"].state == @board.board_cases["C3"].state && @board.board_cases["A1"].state != BoardCase.state_empty then
-      @game_statut = 0
-    elsif @board.board_cases["C1"].state == @board.board_cases["B2"].state && @board.board_cases["C1"].state == @board.board_cases["A3"].state && @board.board_cases["C1"].state != BoardCase.state_empty then
+    line01_x = ["A1","B1","C1"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    line02_x = ["A2","B2","C2"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    line03_x = ["A3","B3","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    column01_x = ["A1","A2","A3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    column02_x = ["B1","B2","B3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    column03_x = ["C1","C2","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    diag01_x = ["A1","B2","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    diag02_x = ["A3","B2","C1"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x)
+    line01_o = ["A1","B1","C1"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    line02_o = ["A2","B2","C2"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    line03_o = ["A3","B3","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    column01_o = ["A1","A2","A3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    column02_o = ["B1","B2","B3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    column03_o = ["C1","C2","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    diag01_o = ["A1","B2","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    diag02_o = ["A3","B2","C1"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_o)
+    # line01 = ["A1","B1","C1"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+    # line02 = ["A2","B2","C2"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+    # line03 = ["A3","B3","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+    # column01 = ["A1","A2","A3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+    # column02 = ["B1","B2","B3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+    # column03 = ["C1","C2","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+    # diag01 = ["A1","B2","C3"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+    # diag02 = ["A3","B2","C1"].map{|current|@board.board_cases[current].state}.all?(BoardCase.state_x || BoardCase.state_o)
+
+    if line01_x || line02_x || line03_x || column01_x || column02_x || column03_x || diag01_x || diag02_x || line01_o || line02_o || line03_o || column01_o || column02_o || column03_o || diag01_o || diag02_o
       @game_statut = 0
     end
-    puts @game_statut
+  end
+
+  def edit_board_case(input)
+    if @player_turn.symbol == "x"
+      @board.board_cases[input].state = BoardCase.state_x
+    else
+      @board.board_cases[input].state = BoardCase.state_o
+    end
+  end
+
+  def test_board_case(input)
+    if Board.cases.include?(input) == true && @board.board_cases[input].state == BoardCase.state_empty
+      edit_board_case(input)
+    elsif Board.cases.include?(input) == false
+      @screen.board_case_not_exist
+      turn()
+    elsif
+      @screen.board_case_not_empty
+      turn()
+    end
+  end
+
+  def another_game?(winner)
+    if @game_statut == 0
+      @board.draw()
+      @turn_counter = 10
+      if winner != 0
+        @screen.end_game_winner(@board.board_lines, winner.name)
+        @players.each {|player| player == winner ? player.add_victory : player.add_defeat }
+      elsif winner == 0
+        @screen.end_game_equality(@board.board_lines)
+      end
+      @screen.ask_play_again(@players)
+      input = gets.chomp
+      if input == 0
+        Application.end_game
+      elsif input == 1
+        Game.new(@players)
+      end
+    end
   end
 
   def turn
-    while @turn_counter < 10
+    while @turn_counter < 10 && @game_statut == 1
       @screen = Display.new
       @screen.rules()
-      puts @player_turn ; puts @player_turn.symbol
       @board.draw()
       @screen.board(@board.board_lines)
       @screen.player_statut(@turn_counter, @player_turn.name)
       @screen.ask_case
       input = gets.chomp
-      # @board.board_cases[input].state = BoardCase.state_x
-      # p @board.board_cases[input].state
-      # gets.chomp
-      if @player_turn.symbol == "x"
-        @board.board_cases[input].state = BoardCase.state_x
-      else
-        @board.board_cases[input].state = BoardCase.state_o
-      end
+      test_board_case(input)
       is_win()
+      another_game?(winner = @player_turn )
       change_player_turn()
       @turn_counter += 1
-      if @game_statut == 0
-        puts "Partie terminée"
-        gets.chomp
-      end
     end
+    another_game?(winner = 0)
   end
 end
