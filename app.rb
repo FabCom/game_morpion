@@ -1,14 +1,14 @@
+# frozen_string_literal: true
+
 require 'bundler'
 Bundler.require
 
-
-
-$:.unshift File.expand_path('./../lib', __FILE__)
+$LOAD_PATH.unshift File.expand_path('lib', __dir__)
 
 require 'app/Board'
 require 'app/BoardCase'
 require 'app/Game'
-require 'app/Display'
+require 'views/Display'
 require 'app/Player'
 require 'app/colorizeString'
 
@@ -17,11 +17,11 @@ class Application
 
   def initialize
     @screen = Display.new
-    @screen.init()
-    @screen.rules()
+    @screen.init
+    @screen.rules
     @players = Array.new(2)
-    init_players()
-    play_game()
+    init_players
+    play_game
   end
 
   def init_players
@@ -37,12 +37,8 @@ class Application
 
   def play_game
     @@play_again = 1
-    while @@play_again == 1
-      Game.new(@players)
-    end
-    if @@play_again == 0
-      puts "Fin du jeu"
-    end
+    Game.new(@players) while @@play_again == 1
+    puts 'Fin du jeu' if @@play_again.zero?
   end
 end
 

@@ -1,16 +1,17 @@
-class Display
+# frozen_string_literal: true
 
-  @@title = File.read("./assets/title_mini.txt")
+class Display
+  @@title = File.read('./assets/title_mini.txt')
 
   def initialize
-    system("clear")
+    system('clear')
   end
 
   def init
-    ascii_art = File.read("./assets/title.txt")
+    ascii_art = File.read('./assets/title.txt')
     puts ascii_art.red
     puts puts
-    puts "                           Appuie sur " + "ENTRER".brown + " pour commencer"
+    puts "                           Appuie sur #{'ENTRER'.brown} pour commencer"
     gets.chomp
     system('clear')
   end
@@ -27,7 +28,7 @@ class Display
   def ask_name(index)
     puts puts
     puts "    Blaze du joueur #{index + 1}"
-    print "    > "
+    print '    > '
   end
 
   def player_statut(turn, player_name)
@@ -40,13 +41,16 @@ class Display
 
   def board(board_lines)
     puts puts
-    board_lines.each {|line| print " " * 25 ; puts line}
+    board_lines.each do |line|
+      print ' ' * 25
+      puts line
+    end
   end
 
   def ask_case
     puts puts
-    puts "    Quelle case choisis-tu ?"
-    print "    > "
+    puts '    Quelle case choisis-tu ?'
+    print '    > '
   end
 
   def board_case_not_empty
@@ -63,9 +67,9 @@ class Display
     system('clear')
     puts @@title.bold.red
     puts puts
-    puts " " * 25 + "Partie terminée"
+    puts "#{' ' * 25}Partie terminée"
     puts puts
-    puts " " * 15 + "Bravo #{player_win_name}".bold.green.blink
+    puts ' ' * 15 + "Bravo #{player_win_name}".bold.green.blink
     board(board_lines)
   end
 
@@ -73,9 +77,9 @@ class Display
     system('clear')
     puts @@title.bold.red
     puts puts
-    puts " " * 25 + "Partie terminée"
+    puts "#{' ' * 25}Partie terminée"
     puts puts
-    puts " " * 15 + "Aucun de vous deux n'a remporté la partie".bold.green.blink
+    puts ' ' * 15 + "Aucun de vous deux n'a remporté la partie".bold.green.blink
     board(board_lines)
   end
 
@@ -84,7 +88,7 @@ class Display
       puts player.scores
       puts puts
     end
-    puts "    Une autre partie ?              Taper " + "0".brown + " pour ne plus jouer            Taper " + "1".brown + " pour continuer"
-    print "    > "
+    puts "    Une autre partie ?              Taper #{'0'.brown} pour ne plus jouer            Taper #{'1'.brown} pour continuer"
+    print '    > '
   end
 end

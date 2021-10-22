@@ -1,9 +1,11 @@
+# frozen_string_literal: true
+
 class Player
   attr_accessor :name, :symbol, :results
 
   def initialize
-    @name = ask_name()
-    @results = [0,0] #[victories, defeats]
+    @name = ask_name
+    @results = [0, 0] # [victories, defeats]
   end
 
   def ask_name

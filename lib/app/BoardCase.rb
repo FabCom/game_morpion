@@ -1,7 +1,9 @@
+# frozen_string_literal: true
+
 class BoardCase
-  @@state_empty = ["       ","       ","       ","       ","       ","       ","       "]
-  @@state_x =     ["#     #"," #   # ","  # #  ","   #   ","  # #  "," #   # ","#     #"]
-  @@state_o =     ["#######","#     #","#     #","#     #","#     #","#     #","#######"]
+  @@state_empty = ['       ', '       ', '       ', '       ', '       ', '       ', '       ']
+  @@state_x =     ['#     #', ' #   # ', '  # #  ', '   #   ', '  # #  ', ' #   # ', '#     #']
+  @@state_o =     ['#######', '#     #', '#     #', '#     #', '#     #', '#     #', '#######']
 
   attr_accessor :state
 
@@ -22,6 +24,6 @@ class BoardCase
   end
 
   def is_empty?
-    self.state == @@state_empty ? true : false
+    state == @@state_empty
   end
 end
